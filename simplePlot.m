@@ -1,5 +1,5 @@
 % ddd1=importdata("/Users/jin/Downloads/ipad/02_08/ARposes.txt");
-ddd1=importdata("/Volumes/BlackSSD/11_21_2020/mall/2020-11-22T12-44-26/ARposes.txt");
+ddd1=importdata("/Volumes/BlackSSD/OBS/l515_gt.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceNearLong_est.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceFarshort_est.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceFarLong_est.csv");
@@ -7,7 +7,7 @@ ddd1=importdata("/Volumes/BlackSSD/11_21_2020/mall/2020-11-22T12-44-26/ARposes.t
 % ddd1 = ddd1(9009:15828,:);
 ddd1(:,1) = ddd1(:,1) - ddd1(1,1);
 % figure,plot3(ddd1(:,2),ddd1(:,3),ddd1(:,4),'b','LineWidth',2),axis equal,grid minor
-
+%%
 figure,patch(ddd1(:,2),ddd1(:,3),ddd1(:,4),ddd1(:,1),'edgecolor','flat','facecolor','none','LineWidth',3)
 grid minor
 view(3);colorbar
@@ -24,6 +24,7 @@ view(0,0)
 %%
 
 ddd1= importdata("/Users/jin/Q_Mac/work/temp/gt/corridor4_gt.csv");
+%%
 figure,
 
 subplot(3,1,1)
@@ -37,6 +38,23 @@ subplot(3,1,3)
 plot(ddd1(:,1),ddd1(:,4),'g'),grid minor
 
 
+%%
+figure,
+eulr = quat2eul(ddd1(:,5:8))*180/pi;
+subplot(3,1,1)
+plot(ddd1(:,1),eulr(:,1),'g'),grid minor
+% hold on,plot(ddd1(:,1),ddd1(:,2),'go'),grid minor
+
+subplot(3,1,2)
+plot(ddd1(:,1),eulr(:,2),'g'),grid minor
+
+subplot(3,1,3)
+plot(ddd1(:,1),eulr(:,3),'g'),grid minor
+
+%%
+axis_angle = quat2axang(ddd1(:,5:8));
+figure,
+plot(ddd1(:,1),axis_angle(:,4),'g'),grid minor
 %%
 % clc
 A = cursor_info1(4).Position;
