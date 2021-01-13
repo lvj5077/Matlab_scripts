@@ -74,251 +74,452 @@ plot(rpy_vins(:,1),rpy_vins(:,2),'r','LineWidth',2)
 grid minor,hold on
 plot(rpy_gt(:,1),rpy_gt(:,2),'b','LineWidth',2)
 
-title("roll",'FontSize',titleszie)
-xlabel("t (s)",'FontSize',titleszie,'FontWeight','bold')
-ylabel("Roll (degree)",'FontSize',titleszie,'FontWeight','bold')
+title("Roll",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Angle (degree)",'FontSize',labelsize,'FontWeight','bold')
 set(gca,'FontSize',xyzsize)
-legend("Estimate","Spine","Groundtruth")
+legend("Estimate","Groundtruth")
     
 subplot(3,1,2)
 plot(rpy_vins(:,1),rpy_vins(:,3),'r','LineWidth',2)
 grid minor,hold on
 plot(rpy_gt(:,1),rpy_gt(:,3),'b','LineWidth',2)
-title("pitch",'FontSize',titleszie)
-xlabel("t (s)",'FontSize',titleszie,'FontWeight','bold')
-ylabel("Pitch (degree)",'FontSize',titleszie,'FontWeight','bold')
+title("Pitch",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Angle (degree)",'FontSize',labelsize,'FontWeight','bold')
 set(gca,'FontSize',xyzsize)
-legend("Estimate","Spine","Groundtruth")
+legend("Estimate","Groundtruth")
 
 subplot(3,1,3)
 plot(rpy_vins(:,1),rpy_vins(:,4),'r','LineWidth',2)
 grid minor,hold on
 plot(rpy_gt(:,1),rpy_gt(:,4),'b','LineWidth',2)
-title("yaw",'FontSize',titleszie)
-xlabel("t (s)",'FontSize',titleszie,'FontWeight','bold')
-ylabel("Yaw (degree)",'FontSize',titleszie,'FontWeight','bold')
+title("Yaw",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Angle (degree)",'FontSize',labelsize,'FontWeight','bold')
 set(gca,'FontSize',xyzsize)
-legend("Estimate","Groundtruth")
+legend("Estimate","Groundtruth",'Location','southeast')
 
 set(gcf,'color','w');
 
 exportgraphics(h,'angle.png') 
 
+%%
+labelsize = 20;
+titleszie = 24;
+xyzsize = 24;
+h = figure('units','normalized','outerposition',[0 0 0.7 1]);
 
+A = repmat(gt(:,1),[1 length(vins(:,1))]);
+[minValue,closestIndex] = min(abs(A-vins(:,1)'));
+
+subplot(3,1,1)
+plot(rpy_vins(:,1),rpy_vins(:,2),'r','LineWidth',2)
+grid minor,hold on
+plot(rpy_gt(closestIndex,1),rpy_gt(closestIndex,2),'b','LineWidth',2)
+
+title("Roll",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Angle (degree)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth")
+    
+subplot(3,1,2)
+plot(rpy_vins(:,1),rpy_vins(:,3),'r','LineWidth',2)
+grid minor,hold on
+plot(rpy_gt(closestIndex,1),rpy_gt(closestIndex,3),'b','LineWidth',2)
+title("Pitch",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Angle (degree)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth")
+
+subplot(3,1,3)
+plot(rpy_vins(:,1),rpy_vins(:,4),'r','LineWidth',2)
+grid minor,hold on
+plot(rpy_gt(closestIndex,1),rpy_gt(closestIndex,4),'b','LineWidth',2)
+title("Yaw",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Angle (degree)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
+
+set(gcf,'color','w');
+
+exportgraphics(h,'angle_closet.png') 
+%%
+mean(abs(rpy_vins(:,1)-rpy_gt(closestIndex,1)))
+mean(abs(rpy_vins(:,2)-rpy_gt(closestIndex,2)))
+mean(abs(rpy_vins(:,3)-rpy_gt(closestIndex,3)))
+mean(abs(rpy_vins(:,4)-rpy_gt(closestIndex,4)))
+
+std(abs(rpy_vins(:,2)-rpy_gt(closestIndex,2)))
+std(abs(rpy_vins(:,3)-rpy_gt(closestIndex,3)))
+std(abs(rpy_vins(:,4)-rpy_gt(closestIndex,4)))
 %%
 
-h =figure();set(h, 'position', get(0,'ScreenSize'));
+labelsize = 20;
+titleszie = 24;
+xyzsize = 24;
+h = figure('units','normalized','outerposition',[0 0 0.7 1]);
+
 
 subplot(3,1,1)
 plot(vins(:,1),vins(:,2),'r','LineWidth',2)
 grid minor,hold on
-plot(newGTxyz(:,1),newGTxyz(:,2),'b','LineWidth',2)
-hold on
-plot(gt(:,1),gt(:,2),'g','LineWidth',2)
-title("X",'FontSize',24)
-xlabel("t (s)")
-ylabel("distance (m)")
-legend("Estimate","Spine","Groundtruth")
+plot(gt(:,1),gt(:,2),'b','LineWidth',2)
+
+title("X",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Position (m)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
     
 subplot(3,1,2)
 plot(vins(:,1),vins(:,3),'r','LineWidth',2)
 grid minor,hold on
-plot(newGTxyz(:,1),newGTxyz(:,3),'b','LineWidth',2)
-hold on
-plot(gt(:,1),gt(:,3),'g','LineWidth',2)
-title("Y",'FontSize',24)
-xlabel("t (s)")
-ylabel("distance (m)")
-legend("Estimate","Spine","Groundtruth")
+plot(gt(:,1),gt(:,3),'b','LineWidth',2)
+title("Y",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Position (m)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
 subplot(3,1,3)
 plot(vins(:,1),vins(:,4),'r','LineWidth',2)
 grid minor,hold on
-plot(newGTxyz(:,1),newGTxyz(:,4),'b','LineWidth',2)
-hold on
-plot(gt(:,1),gt(:,4),'g','LineWidth',2)
-title("Z",'FontSize',24)
-xlabel("t (s)")
-ylabel("distance (m)")
-legend("Estimate","Spine","Groundtruth")
-% ax = gca;
-% exportgraphics(h,'myplot.png','Resolution',300) 
-saveas(h,'3hz/xyz.png')
+plot(gt(:,1),gt(:,4),'b','LineWidth',2)
+title("Z",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Position (m)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
+
+set(gcf,'color','w');
+
+exportgraphics(h,'xyz.png') 
+
 %%
+A = repmat(gt(:,1),[1 length(vins(:,1))]);
+[minValue,closestIndex] = min(abs(A-vins(:,1)'));
 
-Vrpy_vins = rpy_vins;
-Vrpy_gt = rpy_SPgt;
-
-Vrpy_vins(1,2:4) = [0,0,0];
-Vrpy_gt(1,2:4) = [0,0,0];
-
-Vrpy_vins(2:end,2:4) = (rpy_vins(2:end,2:4)-rpy_vins(1:end-1,2:4))./(rpy_vins(2:end,1)-rpy_vins(1:end-1,1));
-Vrpy_gt(2:end,2:4) = (rpy_SPgt(2:end,2:4)-rpy_SPgt(1:end-1,2:4))./(rpy_SPgt(2:end,1)-rpy_SPgt(1:end-1,1));
+labelsize = 20;
+titleszie = 24;
+xyzsize = 24;
+h = figure('units','normalized','outerposition',[0 0 0.7 1]);
 
 
-h =figure();set(h, 'position', get(0,'ScreenSize'));
 subplot(3,1,1)
-plot(Vrpy_vins(:,1),Vrpy_vins(:,2),'LineWidth',2)
+plot(vins(:,1),vins(:,2),'r','LineWidth',2)
 grid minor,hold on
-plot(Vrpy_gt(:,1),Vrpy_gt(:,2),'LineWidth',2)
-xlabel("t (s)")
-ylabel("angular velocity (degree/s)")
-title("w(roll)",'FontSize',24)
-legend("Estimate","Groundtruth")
+plot(gt(closestIndex,1),gt(closestIndex,2),'b','LineWidth',2)
 
+title("X",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Position (m)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
+    
 subplot(3,1,2)
-plot(Vrpy_vins(:,1),Vrpy_vins(:,3),'LineWidth',2)
+plot(vins(:,1),vins(:,3),'r','LineWidth',2)
 grid minor,hold on
-plot(Vrpy_gt(:,1),Vrpy_gt(:,3),'LineWidth',2)
-xlabel("t (s)")
-ylabel("angular velocity (degree/s)")
-title("w(pitch)",'FontSize',24)
-legend("Estimate","Groundtruth")
+plot(gt(closestIndex,1),gt(closestIndex,3),'b','LineWidth',2)
+title("Y",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Position (m)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
 subplot(3,1,3)
-plot(Vrpy_vins(:,1),Vrpy_vins(:,4),'LineWidth',2)
+plot(vins(:,1),vins(:,4),'r','LineWidth',2)
 grid minor,hold on
-plot(Vrpy_gt(:,1),Vrpy_gt(:,4),'LineWidth',2)
-xlabel("t (s)")
-ylabel("angular velocity (degree/s)")
-title("w(yaw)",'FontSize',24)
-legend("Estimate","Groundtruth")
-saveas(h,'3hz/angle_speed.png')
+plot(gt(closestIndex,1),gt(closestIndex,4),'b','LineWidth',2)
+title("Z",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Position (m)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
+
+set(gcf,'color','w');
+
+exportgraphics(h,'xyz_closest.png') 
 %%
-quat_vins = eul2quat(Vrpy_vins(:,2:4)*pi/180,'zyx');
-quat_gt = eul2quat(Vrpy_gt(:,2:4)*pi/180,'zyx');
+% mean(abs(vins(:,1)-gt(closestIndex,1)))
+mean(abs(vins(:,2)-gt(closestIndex,2)))
+mean(abs(vins(:,3)-gt(closestIndex,3)))
+mean(abs(vins(:,4)-gt(closestIndex,4)))
 
-newVins = [vins(:,1:4),quat_vins(:,2:4),quat_vins(:,1)];
-newGT = [newGTxyz(:,1:4),quat_gt(:,2:4),quat_gt(:,1)];
-writematrix(newVins,'newVins.txt','Delimiter','space')
-writematrix(newGT,'newGT.txt','Delimiter','space')
-
-
+% std(abs(vins(:,1)-gt(closestIndex,1)))
+std(abs(vins(:,2)-gt(closestIndex,2)))
+std(abs(vins(:,3)-gt(closestIndex,3)))
+std(abs(vins(:,4)-gt(closestIndex,4)))
 %%
-h =figure();set(h, 'position', get(0,'ScreenSize'));
+Lvins = length(vins);
+vins_Vxyz(:,1) = (vins(2:Lvins,1)+vins(1:Lvins-1,1))/2;
+vins_Vxyz(:,2:4) = (vins(2:Lvins,2:4)-vins(1:Lvins-1,2:4))./(vins(2:Lvins,1)-vins(1:Lvins-1,1));
+
+Lgt = length(gt);
+gt_Vxyz(:,1) = (gt(2:Lgt,1)+gt(1:Lgt-1,1))/2;
+gt_Vxyz(:,2:4) = (gt(2:Lgt,2:4)-gt(1:Lgt-1,2:4))./(gt(2:Lgt,1)-gt(1:Lgt-1,1));
+
+
+labelsize = 20;
+titleszie = 24;
+xyzsize = 24;
+h = figure('units','normalized','outerposition',[0 0 0.7 1]);
+
 subplot(3,1,1)
-plot(Vrpy_vins(:,1),Vrpy_vins(:,2)-Vrpy_gt(:,2),'LineWidth',2)
+plot(vins_Vxyz(:,1),vins_Vxyz(:,2),'r','LineWidth',2)
 grid minor,hold on
-% title("Error w(roll)",'FontSize',24)
-title(['Error w(roll), mean: ',num2str(mean(abs(Vrpy_vins(:,2)-Vrpy_gt(:,2)))),' degree/s'],'FontSize',24)
-xlabel("t (s)")
-ylabel("angular velocity (degree/s)")
+plot(gt_Vxyz(:,1),gt_Vxyz(:,2),'b','LineWidth',2)
 
+title("Vx",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Velocity (m/s)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','northeast')
+    
 subplot(3,1,2)
-plot(Vrpy_vins(:,1),Vrpy_vins(:,3)-Vrpy_gt(:,3),'LineWidth',2)
+plot(vins_Vxyz(:,1),vins_Vxyz(:,3),'r','LineWidth',2)
 grid minor,hold on
-title(['Error w(pitch), mean: ',num2str(mean(abs(Vrpy_vins(:,3)-Vrpy_gt(:,3)))),' degree/s'],'FontSize',24)
-xlabel("t (s)")
-ylabel("angular velocity (degree/s)")
+plot(gt_Vxyz(:,1),gt_Vxyz(:,3),'b','LineWidth',2)
+title("Vy",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Velocity (m/s)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
 subplot(3,1,3)
-plot(Vrpy_vins(:,1),Vrpy_vins(:,4)-Vrpy_gt(:,4),'LineWidth',2)
+plot(vins_Vxyz(:,1),vins_Vxyz(:,4),'r','LineWidth',2)
 grid minor,hold on
-title(['Error w(yaw), mean: ',num2str(mean(abs(Vrpy_vins(:,4)-Vrpy_gt(:,4)))),' degree/s'],'FontSize',24)
-xlabel("t (s)")
-ylabel("angular velocity (degree/s)")
+plot(gt_Vxyz(:,1),gt_Vxyz(:,4),'b','LineWidth',2)
+title("Vz",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Velocity (m/s)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
+set(gcf,'color','w');
 
-saveas(h,'3hz/angle_speed_error.png')
+exportgraphics(h,'Vxyz.png') 
 %%
-h =figure();set(h, 'position', get(0,'ScreenSize'));
-subplot(3,1,1)
-plot(vins(:,1),100*vins(:,2)-100*newGTxyz(:,2),'LineWidth',2)
-grid minor,hold on
-% title("Error w(roll)",'FontSize',24)
-title(['Error X, mean: ',num2str(100*mean(abs(vins(:,2)-newGTxyz(:,2)))),' cm'],'FontSize',24)
-xlabel("t (s)")
-ylabel("distance (cm)")
+Lvins = length(vins);
+vins_Vxyz(:,1) = (vins(2:Lvins,1)+vins(1:Lvins-1,1))/2;
+vins_Vxyz(:,2:4) = (vins(2:Lvins,2:4)-vins(1:Lvins-1,2:4))./(vins(2:Lvins,1)-vins(1:Lvins-1,1));
 
-subplot(3,1,2)
-plot(vins(:,1),100*vins(:,3)-100*newGTxyz(:,3),'LineWidth',2)
+Lgt = length(gt);
+gt_Vxyz(:,1) = (gt(2:Lgt,1)+gt(1:Lgt-1,1))/2;
+gt_Vxyz(:,2:4) = (gt(2:Lgt,2:4)-gt(1:Lgt-1,2:4))./(gt(2:Lgt,1)-gt(1:Lgt-1,1));
+
+A = repmat(rpy_gt(:,1),[1 length(vins_Vxyz(:,1))]);
+[minValue,closestIndex] = min(abs(A-vins_Vxyz(:,1)'));
+gt_Vxyz_ds = gt_Vxyz(closestIndex,:);
+
+labelsize = 20;
+titleszie = 24;
+xyzsize = 24;
+h = figure('units','normalized','outerposition',[0 0 0.7 1]);
+
+subplot(3,1,1)
+plot(vins_Vxyz(:,1),vins_Vxyz(:,2),'r','LineWidth',2)
 grid minor,hold on
-title(['Error Y, mean: ',num2str(100*mean(abs(vins(:,3)-newGTxyz(:,3)))),' cm'],'FontSize',24)
-xlabel("t (s)")
-ylabel("distance (cm)")
+plot(gt_Vxyz_ds(:,1),gt_Vxyz_ds(:,2),'b','LineWidth',2)
+
+title("Vx",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Velocity (m/s)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','northeast')
+    
+subplot(3,1,2)
+plot(vins_Vxyz(:,1),vins_Vxyz(:,3),'r','LineWidth',2)
+grid minor,hold on
+plot(gt_Vxyz_ds(:,1),gt_Vxyz_ds(:,3),'b','LineWidth',2)
+title("Vy",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Velocity (m/s)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
 subplot(3,1,3)
-plot(vins(:,1),100*vins(:,4)-100*newGTxyz(:,4),'LineWidth',2)
+plot(vins_Vxyz(:,1),vins_Vxyz(:,4),'r','LineWidth',2)
 grid minor,hold on
-title(['Error Z, mean: ',num2str(100*mean(abs(vins(:,4)-newGTxyz(:,4)))),' cm'],'FontSize',24)
-xlabel("t (s)")
-ylabel("distance (cm)")
-saveas(h,'3hz/xyz_error.png')
-%%
-h =figure();set(h, 'position', get(0,'ScreenSize'));
-dd = vecnorm([100*vins(:,2:4)-100*newGTxyz(:,2:4)]');
-dd =dd';
-plot(vins(:,1),dd,'LineWidth',2)
-grid minor,hold on
-title(['Absolute Pose Error, mean: ',num2str(mean(dd)),' cm'],'FontSize',24)
-xlabel("t (s)")
-ylabel("distance (cm)")
-saveas(h,'3hz/xyz_ape.png')
-%%
-Vxyz_vins = vins;
-Vxyz_gt = newGTxyz;
+plot(gt_Vxyz_ds(:,1),gt_Vxyz_ds(:,4),'b','LineWidth',2)
+title("Vz",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel("Velocity (m/s)",'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
-Vxyz_vins(1,2:4) = [0,0,0];
-Vxyz_gt(1,2:4) = [0,0,0];
+set(gcf,'color','w');
 
-Vxyz_vins(2:end,2:4) = (vins(2:end,2:4)-vins(1:end-1,2:4))./(rpy_vins(2:end,1)-rpy_vins(1:end-1,1));
-Vxyz_gt(2:end,2:4) = (newGTxyz(2:end,2:4)-newGTxyz(1:end-1,2:4))./(newGTxyz(2:end,1)-newGTxyz(1:end-1,1));
-
+exportgraphics(h,'Vxyz_closest.png') 
 %%
-h =figure();set(h, 'position', get(0,'ScreenSize'));
+clc
+mean(abs(vins_Vxyz(:,1)-gt_Vxyz_ds(:,1)))
+mean(abs(vins_Vxyz(:,2)-gt_Vxyz_ds(:,2)))
+mean(abs(vins_Vxyz(:,3)-gt_Vxyz_ds(:,3)))
+mean(abs(vins_Vxyz(:,4)-gt_Vxyz_ds(:,4)))
+
+std(abs(vins_Vxyz(:,2)-gt_Vxyz_ds(:,2)))
+std(abs(vins_Vxyz(:,3)-gt_Vxyz_ds(:,3)))
+std(abs(vins_Vxyz(:,4)-gt_Vxyz_ds(:,4)))
+%%
+Lvins = length(rpy_vins);
+vins_Vrpy(:,1) = (rpy_vins(2:Lvins,1)+rpy_vins(1:Lvins-1,1))/2;
+vins_Vrpy(:,2:4) = (rpy_vins(2:Lvins,2:4)-rpy_vins(1:Lvins-1,2:4))./(rpy_vins(2:Lvins,1)-rpy_vins(1:Lvins-1,1));
+
+Lgt = length(rpy_gt);
+clear gt_Vrpy
+gt_Vrpy(:,1) = (rpy_gt(2:Lgt,1)+rpy_gt(1:Lgt-1,1))/2;
+gt_Vrpy(:,2:4) = (rpy_gt(2:Lgt,2:4)-rpy_gt(1:Lgt-1,2:4))./(rpy_gt(2:Lgt,1)-rpy_gt(1:Lgt-1,1));
+
+
+labelsize = 20;
+titleszie = 24;
+xyzsize = 24;
+h = figure('units','normalized','outerposition',[0 0 0.7 1]);
+
 subplot(3,1,1)
-plot(Vxyz_vins(:,1),100*Vxyz_vins(:,2),'LineWidth',2)
+plot(gt_Vrpy(:,1),gt_Vrpy(:,2),'b','LineWidth',2)
 grid minor,hold on
-plot(Vxyz_gt(:,1),100*Vxyz_gt(:,2),'LineWidth',2)
-xlabel("t (s)")
-ylabel("velocity (cm/s)")
-title("V(x)",'FontSize',24)
-legend("Estimate","Groundtruth")
-
+plot(vins_Vrpy(:,1),vins_Vrpy(:,2),'r','LineWidth',2)
+title("Wroll",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel(["Velocity ","(degree/s)"],'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
+    
 subplot(3,1,2)
-plot(Vxyz_vins(:,1),100*Vxyz_vins(:,3),'LineWidth',2)
+plot(gt_Vrpy(:,1),gt_Vrpy(:,3),'b','LineWidth',2)
 grid minor,hold on
-plot(Vxyz_gt(:,1),100*Vxyz_gt(:,3),'LineWidth',2)
-xlabel("t (s)")
-ylabel("velocity (cm/s)")
-title("V(y)",'FontSize',24)
-legend("Estimate","Groundtruth")
+plot(vins_Vrpy(:,1),vins_Vrpy(:,3),'r','LineWidth',2)
+title("Wpitch",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel(["Velocity ","(degree/s)"],'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
 subplot(3,1,3)
-plot(Vxyz_vins(:,1),100*Vxyz_vins(:,4),'LineWidth',2)
+plot(gt_Vrpy(:,1),gt_Vrpy(:,4),'b','LineWidth',2)
 grid minor,hold on
-plot(Vxyz_gt(:,1),100*Vxyz_gt(:,4),'LineWidth',2)
-xlabel("t (s)")
-ylabel("velocity (cm/s)")
-title("V(z)",'FontSize',24)
-legend("Estimate","Groundtruth")
+plot(vins_Vrpy(:,1),vins_Vrpy(:,4),'r','LineWidth',2)
+title("Wyaw",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel(["Velocity ","(degree/s)"],'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
-saveas(h,'3hz/xyz_speed.png')
+set(gcf,'color','w');
 
+exportgraphics(h,'Wrpy.png') 
 %%
-h =figure();set(h, 'position', get(0,'ScreenSize'));
-subplot(3,1,1)
-plot(Vxyz_vins(:,1),100*Vxyz_vins(:,2)-100*Vxyz_gt(:,2),'LineWidth',2)
-grid minor,hold on
-% title("Error w(roll)",'FontSize',24)
-title(['Speed Error X, mean: ',num2str(100*mean(abs(Vxyz_vins(:,2)-Vxyz_gt(:,2)))),' cm/s'],'FontSize',24)
-xlabel("t (s)")
-ylabel("velocity (cm/s)")
+Lvins = length(rpy_vins);
+vins_Vrpy(:,1) = (rpy_vins(2:Lvins,1)+rpy_vins(1:Lvins-1,1))/2;
+vins_Vrpy(:,2:4) = (rpy_vins(2:Lvins,2:4)-rpy_vins(1:Lvins-1,2:4))./(rpy_vins(2:Lvins,1)-rpy_vins(1:Lvins-1,1));
 
-subplot(3,1,2)
-plot(Vxyz_vins(:,1),100*Vxyz_vins(:,3)-100*Vxyz_gt(:,3),'LineWidth',2)
+Lgt = length(rpy_gt);
+clear gt_Vrpy
+gt_Vrpy(:,1) = (rpy_gt(2:Lgt,1)+rpy_gt(1:Lgt-1,1))/2;
+gt_Vrpy(:,2:4) = (rpy_gt(2:Lgt,2:4)-rpy_gt(1:Lgt-1,2:4))./(rpy_gt(2:Lgt,1)-rpy_gt(1:Lgt-1,1));
+
+
+A = repmat(rpy_gt(:,1),[1 length(vins_Vrpy(:,1))]);
+[minValue,closestIndex] = min(abs(A-vins_Vrpy(:,1)'));
+gt_Vrpy_ds = gt_Vrpy(closestIndex,:);
+
+labelsize = 20;
+titleszie = 24;
+xyzsize = 24;
+h = figure('units','normalized','outerposition',[0 0 0.7 1]);
+
+subplot(3,1,1)
+plot(gt_Vrpy_ds(:,1),gt_Vrpy_ds(:,2),'b','LineWidth',2)
 grid minor,hold on
-title(['Speed Error Y, mean: ',num2str(100*mean(abs(Vxyz_vins(:,3)-Vxyz_gt(:,3)))),' cm/s'],'FontSize',24)
-xlabel("t (s)")
-ylabel("velocity (cm/s)")
+plot(vins_Vrpy(:,1),vins_Vrpy(:,2),'r','LineWidth',2)
+title("Wroll",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel(["Velocity ","(degree/s)"],'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
+    
+subplot(3,1,2)
+plot(gt_Vrpy_ds(:,1),gt_Vrpy_ds(:,3),'b','LineWidth',2)
+grid minor,hold on
+plot(vins_Vrpy(:,1),vins_Vrpy(:,3),'r','LineWidth',2)
+title("Wpitch",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel(["Velocity ","(degree/s)"],'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
 subplot(3,1,3)
-plot(Vxyz_vins(:,1),100*Vxyz_vins(:,4)-100*Vxyz_gt(:,4),'LineWidth',2)
+plot(gt_Vrpy_ds(:,1),gt_Vrpy_ds(:,4),'b','LineWidth',2)
 grid minor,hold on
-title(['Speed Error Z, mean: ',num2str(100*mean(abs(Vxyz_vins(:,4)-Vxyz_gt(:,4)))),' cm/s'],'FontSize',24)
-xlabel("t (s)")
-ylabel("velocity (cm/s)")
-saveas(h,'3hz/xyz_speed_error.png')
+plot(vins_Vrpy(:,1),vins_Vrpy(:,4),'r','LineWidth',2)
+title("Wyaw",'FontSize',titleszie)
+xlabel("time (s)",'FontSize',labelsize,'FontWeight','bold')
+ylabel(["Velocity ","(degree/s)"],'FontSize',labelsize,'FontWeight','bold')
+set(gca,'FontSize',xyzsize)
+legend("Estimate","Groundtruth",'Location','southeast')
 
+set(gcf,'color','w');
+
+exportgraphics(h,'Wrpy_closest.png') 
 %%
-close all
+mean(abs(vins_Vrpy(:,1)-gt_Vrpy_ds(:,1)))
+mean(abs(vins_Vrpy(:,2)-gt_Vrpy_ds(:,2)))
+mean(abs(vins_Vrpy(:,3)-gt_Vrpy_ds(:,3)))
+mean(abs(vins_Vrpy(:,4)-gt_Vrpy_ds(:,4)))
+
+std(abs(vins_Vrpy(:,2)-gt_Vrpy_ds(:,2)))
+std(abs(vins_Vrpy(:,3)-gt_Vrpy_ds(:,3)))
+std(abs(vins_Vrpy(:,4)-gt_Vrpy_ds(:,4)))
+%%
+trj = vins;
+L = length(trj);
+r_xyz = zeros(L-1,3);
+r_rpy = zeros(L-1,3);
+for i = 1:L-1
+    T1= eye(4);
+    T2= eye(4);
+    T1(1:3,1:3) = quat2rotm([trj(i,8),trj(i,5:7)]);
+    T1(1:3,4) =(trj(i,2:4))';
+    T2(1:3,1:3) = quat2rotm([trj(i+1,8),trj(i+1,5:7)]);
+    T2(1:3,4) =(trj(i+1,2:4))';
+    T12 = T1\T2;
+    r_xyz(i,:) = T12(1:3,4);
+    r_rpy(i,:) = rotm2eul(T12(1:3,1:3))*180/pi;
+end
+
+r_vins = [vins(2:L,1),r_xyz];
+r_vinsEul = [vins(2:L,1),r_rpy];
+%%
+A = repmat(gt(:,1),[1 length(vins(:,1))]);
+[minValue,closestIndex] = min(abs(A-vins(:,1)'));
+trj = gt(closestIndex,:);
+L = length(trj);
+r_xyz = zeros(L-1,3);
+r_rpy = zeros(L-1,3);
+for i = 1:L-1
+    T1= eye(4);
+    T2= eye(4);
+    T1(1:3,1:3) = quat2rotm([trj(i,8),trj(i,5:7)]);
+    T1(1:3,4) =(trj(i,2:4))';
+    T2(1:3,1:3) = quat2rotm([trj(i+1,8),trj(i+1,5:7)]);
+    T2(1:3,4) =(trj(i+1,2:4))';
+    T12 = T1\T2;
+    r_xyz(i,:) = T12(1:3,4);
+    r_rpy(i,:) = rotm2eul(T12(1:3,1:3))*180/pi;
+end
+
+r_gt = [trj(2:L,1),r_xyz];
+r_gtEul = [trj(2:L,1),r_rpy];
+%%
+mean( abs((r_vinsEul(:,2)-r_gtEul(:,2))) )
+mean( abs((r_vinsEul(:,3)-r_gtEul(:,3))) )
+mean( abs((r_vinsEul(:,4)-r_gtEul(:,4))) )
+
+std( abs((r_vinsEul(:,2)-r_gtEul(:,2))) )
+std( abs((r_vinsEul(:,3)-r_gtEul(:,3))) )
+std( abs((r_vinsEul(:,4)-r_gtEul(:,4))) )
