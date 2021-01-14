@@ -18,3 +18,10 @@ Wpitch 	0.8368 degree/s  0.7270
 Wyaw 	0.7667 degree/s  1.0104
 
 
+Vx		0.7005 cm/s  	0.6066
+Vy 		1.0411 cm/s  	0.8694
+Vz		1.1718 cm/s  	1.1135
+
+Wroll 	1.1119 degree/s  1.1137
+Wpitch 	0.9095 degree/s  0.7829
+Wyaw 	0.9611 degree/s  1.2775
