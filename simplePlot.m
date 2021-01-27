@@ -1,13 +1,14 @@
 % ddd1=importdata("/Users/jin/Downloads/ipad/02_08/ARposes.txt");
-ddd1=importdata("/Volumes/BlackSSD/OBS/l515_gt.csv");
+ddd1=importdata("/Users/jin/Q_Mac/data/2021-01-26T21-40-04/ARposes_arkit.txt");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceNearLong_est.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceFarshort_est.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceFarLong_est.csv");
-
+%%
 % ddd1 = ddd1(9009:15828,:);
 ddd1(:,1) = ddd1(:,1) - ddd1(1,1);
-% figure,plot3(ddd1(:,2),ddd1(:,3),ddd1(:,4),'b','LineWidth',2),axis equal,grid minor
+figure,plot3(ddd1(:,2),ddd1(:,3),ddd1(:,4),'b','LineWidth',2),axis equal,grid minor
 %%
+ddd1 = gt;
 figure,patch(ddd1(:,2),ddd1(:,3),ddd1(:,4),ddd1(:,1),'edgecolor','flat','facecolor','none','LineWidth',3)
 grid minor
 view(3);colorbar

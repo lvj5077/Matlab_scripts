@@ -1,22 +1,21 @@
 estimate @10.5Hz groundtruth @120Hz
 
     	Mean       		std
-x		1.7280 cm		1.7707
-y 		1.7608 cm   	1.3317
-z		0.9331 cm   	1.0822
-Vx		1.0460 cm/s  	0.8596
-Vy 		1.6061 cm/s  	1.5444
-Vz		1.4284 cm/s  	1.3173
+x		3.1035 cm		2.7615
+y 		2.6161 cm   	1.8836
+z		1.7498 cm   	1.8517
+Vx		1.0417 cm/s  	0.8078
+Vy 		1.9185 cm/s  	1.8773
+Vz		1.8125 cm/s  	1.6146
 
 
     	Mean       		 std
-z-axis 	0.1979 degree    0.1175
-y-axis 	0.0976 degree    0.0726
-x-axis 	0.7078 degree    0.3754
-Wz-axis 	0.7025 degree/s  0.5552
-Wy-axis 	0.7712 degree/s  0.6456
-Wx-axis 	1.1277 degree/s  1.1166
-
+z-axis 	0.2654 degree    0.1689
+y-axis 	0.0948 degree    0.0677
+x-axis 	0.7490 degree    0.3490
+Wz-axis 	0.6809 degree/s  0.5278
+Wy-axis 	0.7471 degree/s  0.6255
+Wx-axis 	1.0285 degree/s  1.0145
 
 ---------------------------------
 Previous results
