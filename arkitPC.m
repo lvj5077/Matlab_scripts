@@ -10,7 +10,7 @@ R_c2b = [    1     0     0
 t_c2b = [-0.00, -0.00, 0.0]';   
 
 % R_c2b = eye(3);
-path = "/Users/jin/Q_Mac/data/person/Arkit/2021-01-26T19-02-17";
+path = "/Users/jin/Q_Mac/data/person/Arkit/2021-01-28T14-56-56";
 traj = importdata(path+"/ARposes.txt");
 ptCloud2 = pointCloud([0,0,0],'Color',[0,0,0]);
 intrinsics = importdata(path+"/Frames.txt");
@@ -27,7 +27,7 @@ ptCloud2 = pointCloud([0,0,0],'Color',[0,0,0]);
 
 T1(1:3,1:3) = quat2rotm(traj(1,5:8));
 T1(1:3,4) =(traj(1,2:4))';
-for i = 1:100:3200
+for i = 787
     fx = intrinsics(i,3)/7.5;
     fy = intrinsics(i,4)/7.5;
     cx = intrinsics(i,5)/7.5+1;
@@ -44,7 +44,7 @@ for i = 1:100:3200
     step = 1;
     Z(1:step:192,1:step:256) = imdepth(1:step:192,1:step:256);
     Z = Z/1000;
-    Z(Z(:,:)>4.5)=0;
+    Z(Z(:,:)>4)=0;
     Z(Z(:,:)<0.25)=0;
     [h,w] = size(imdepth);
     u=repmat(1:w,[h,1]);
@@ -72,7 +72,7 @@ for i = 1:100:3200
 
     
     TT = eye(4);
-    TT = inv(T1)*(T2)
+%     TT = inv(T1)*(T2)
     
     RR = TT(1:3,1:3);
 
@@ -81,16 +81,20 @@ for i = 1:100:3200
     xyzPoints1_2c = (R_c2b*(RR*(R_c2b'*xyzPoints'-t_c2b)+tt)+t_c2b)';
 %     xyzPoints1_2c = xyzPoints;
     ptCloud1_2c = pointCloud(xyzPoints1_2c, 'Color', imcolor3col1); 
-    ptCloud1_2c = pcdenoise(ptCloud1_2c,'NumNeighbors',4,'Threshold',.5);
+%     ptCloud1_2c = pcdenoise(ptCloud1_2c,'NumNeighbors',4,'Threshold',.5);
 
-    ptCloud2 = pcmerge(ptCloud2,ptCloud1_2c,0.01);
+    ptCloud2 = pcmerge(ptCloud2,ptCloud1_2c,0.001);
 end
 
 figure,
 pcshow(ptCloud2)
-% pcwrite(ptCloud2,'ptCloud2.ply')
+pcwrite(ptCloud2,'ptCloud4m.ply')
 %%
-i=2830+diffN;
+% mypc = pcread('ptCloud2.ply');
+% figure,
+% pcshow(mypc)
+
+i=787;
 color_pth = path+"/colorRaw/"+num2str(intrinsics(i,2))+".png";
 imcolor = imread(color_pth);
 imcolor = imresize(imcolor,[480,640]);
@@ -144,6 +148,7 @@ for i = 1:length(xyz)
 %     imcolor(vi,ui,:) = [0,0,0];%color(i,:);
 end
 figure, imshow(imcolor)
+imwrite(imcolor,'pts5m.png')
 %%
 accumTform = rigid3d(T2(1:3,1:3)',[0,0,0]);
 ptCloud2Aligned = pctransform(ptCloud2, accumTform);

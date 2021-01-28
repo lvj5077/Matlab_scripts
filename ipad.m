@@ -25,11 +25,12 @@ for i = 1:52
 end
 %%
 titleSize =50
-labelSize =20
-xyzsize = 30
+labelSize =30
+xyzsize = 40
 % figure,pt1 = plot(depth_mean,'r','LineWidth',5),grid minor
 
-figure,pt1 = plot(depth_mean,1000*depth_std,'o','Color',[0.8500, 0.3250, 0.0980],'LineWidth',5)
+h = figure('units','normalized','outerposition',[0 0 1 1]);
+pt1 = plot(depth_mean,1000*depth_std,'o','Color',[0.8500, 0.3250, 0.0980],'LineWidth',5)
 
 
 % hold on,plot(depth_mean,1000*depth_std,'Color',[0.8500, 0.3250, 0.0980],'LineWidth',5),grid minor
@@ -40,14 +41,35 @@ p2=fit(depth_mean,1000*depth_std,'poly2')
 hold on, pt3 = plot(depth_mean,p2(depth_mean),'Color',[0.4660, 0.6740, 0.1880],'LineWidth',5)
 
 grid minor
-title("std vs depth measurement",'FontSize',titleSize,'FontWeight','bold')
-xlabel("d(m)",'FontSize',labelSize,'FontWeight','bold')
-y=ylabel("std(mm)",'FontSize',labelSize,'FontWeight','bold');
+% title("std vs depth measurement",'FontSize',titleSize,'FontWeight','bold')
+xlabel("distance (m)",'FontSize',labelSize,'FontWeight','bold')
+y=ylabel("standard deviation (mm)",'FontSize',labelSize,'FontWeight','bold');
 set(gca,'FontSize',xyzsize)
 set(gcf,'color','w');
 
-legend([pt1 pt2 pt3],{'Raw Data','Fitted Curve N =1','Fitted Curve N =2'},'FontSize',30)
+legend([pt1 pt2 pt3],{'Raw Data','Fitted Curve N =1','Fitted Curve N =2'},'FontSize',30,'Location','southeast')
+exportgraphics(h,'std.png') 
 
+%%
+% gt = 1:52;
+% gt = 0.1*gt'+0.1+0.06;
+
+gt = 1:48;
+gt = 0.1*gt;
+h = figure('units','normalized','outerposition',[0 0 1 1]);
+% error = abs(depth_mean - gt)*1000;
+error = dd(:,2);
+bar(gt,error)
+grid minor
+xlim([0,5])
+xlabel("distance (m)",'FontSize',labelSize,'FontWeight','bold')
+y=ylabel("mean absolute error (mm)",'FontSize',labelSize,'FontWeight','bold');
+set(gca,'FontSize',xyzsize)
+set(gcf,'color','w');
+exportgraphics(h,'meanE.png') 
+
+%%
+ 
 % %%
 % 
 % Z = b;
