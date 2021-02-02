@@ -1,10 +1,10 @@
 clc
 close all
 clear
-path = "/Users/jin/Q_Mac/data/person/Arkit/2021-01-28T15-08-48/";
+path = "/Users/jin/Q_Mac/data/person/2021-01-29T16-10-09/";
 v = VideoReader(path+"Frames.m4v");
 intrinsics = importdata(path+"Frames.txt");
-frameNum = 6;
+frameNum = 15*30;
 frame = read(v,frameNum);
 frame = imresize(frame,[192,256]);
 imcolor3col1 = reshape(frame,256*192,3);%%256*192
@@ -27,7 +27,7 @@ fy = intrinsics(frameNum,4)/7.5;
 cx = intrinsics(frameNum,5)/7.5+1;
 cy = intrinsics(frameNum,6)/7.5+1;
 Z = imdepth;
-% Z(Z(:,:)>12)=0;
+Z(Z(:,:)>5)=0;
 Z(Z(:,:)<0.25)=0;
 [h,w] = size(imdepth);
 u=repmat(1:w,[h,1]);
@@ -42,3 +42,4 @@ imcolor3col1 = imcolor3col1(Z(:)~=0,:);
 ptCloud = pointCloud(xyzPoints, 'Color', imcolor3col1);
 
 pcshow(ptCloud)
+pcwrite(ptCloud,'ptCloud5m.ply')
