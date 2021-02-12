@@ -2,23 +2,44 @@ clear
 clc
 % close all
 dist =30;
-pointdepth = zeros(256,192,150);
-depth_path = "/Volumes/Extreme_LQ/rotateIP12/y_axis/0_00/FramesDpt.depth";
+pointdepth = zeros(256,192,250);
+% depth_path = "/Users/jin/Q_Mac/data/checkIphoneLidar/viewIverse1/FramesDpt.depth";
+depth_path = "/Volumes/BlackSSD/iphone12_linearChar_bkp/iphone12Ext/ll20/FramesDpt.depth";
  %     depth_path = [ '/Volumes/Extreme_LQ/testTraj_ipad_rgbdi/std_vs_mean/linear',num2str(dist),'/FramesDpt.depth'];
 fff = fopen(depth_path);
 A2 =[];
 A2 = fread(fff,'float');
-totalImage = length(A2)/(192*256);
-A2  = reshape(A2,[256,192,totalImage]);
+
+totalImage = round(length(A2)/(192*256))-1;
+A2  = reshape(A2(1:256*192*totalImage),[256,192,totalImage]);
+meanAll = zeros(256,192);
+stdAll = zeros(256,192);
 for i = 1:256
     i
     for j = 1:192
    
-        d = A2(i,j,totalImage-250:totalImage-101);
+        d = A2(i,j,totalImage-350:totalImage-101);
         d = reshape(d,[1,length(d)]);
         pointdepth(i,j,:) = d;
+        stdAll(i,j) = std(d');
+        meanAll(i,j) = mean(d');
     end
 end
+stdAll = stdAll';
+meanAll = meanAll';
+
+% 
+% [meanAll(99,163),1000*stdAll(99,163)]
+% [meanAll(101,132),1000*stdAll(101,132)]
+% [meanAll(78,147),1000*stdAll(78,147)]
+
+figure,imagesc(meanAll),colorbar
+%%
+close all
+figure,imagesc(stdAll'),colorbar
+imwrite( ind2rgb(im2uint8(mat2gray(stdAll')), parula(256)), '1stdlidar.png')
+figure,imagesc(meanAll'),colorbar
+imwrite( ind2rgb(im2uint8(mat2gray(meanAll')), parula(256)), '1meanlidar.png')
 %%
 figure,
 % imagesc((pointdepth(120:180,50:100,5) - mean(pointdepth(120:180,50:100,:),3))')
