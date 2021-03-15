@@ -13,7 +13,7 @@ depth_mean2 = zeros(ddL,1);
 depth_std = zeros(ddL,1);
 depth_std2 = zeros(ddL,1);
 focal_length = zeros(ddL,1);
-sampleN = 200;
+sampleN = 10;
 for i = 1:ddL
     i
 %     depth_path = [ '/Volumes/Extreme_LQ/testTraj_ipad_rgbdi/std_vs_mean/linear',num2str(i),'/FramesDpt.depth'];
@@ -22,11 +22,11 @@ for i = 1:ddL
 %     intr = importdata(intrin_path);
 %     focal_length = mean(intr(:,3));
 
-    v = VideoReader([ '/Users/jin/Q_Mac/data/6.4-4.4m/linear',num2str(i),'/Frames.m4v']);
+    v = VideoReader([ '/Volumes/BlackSSD/iPhoneLidarCheck/6.4-4.4m/linear',num2str(i),'/Frames.m4v']);
 %     frameNum = 400;
 %     frame = read(v,frameNum);
 %     imwrite(frame,['/Users/jin/Q_Mac/data/6.4-4.4m/',num2str(i),'.png'])
-    depth_path = [ '/Users/jin/Q_Mac/data/6.4-4.4m/linear',num2str(i),'/FramesDpt.depth'];
+    depth_path = [ '/Volumes/BlackSSD/iPhoneLidarCheck/6.4-4.4m/linear',num2str(i),'/FramesDpt.depth'];
     fff = fopen(depth_path);
     A2 =[];
     A2 = fread(fff,'float');

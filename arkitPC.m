@@ -10,7 +10,7 @@ R_c2b = [    1     0     0
 t_c2b = [-0.00, -0.00, 0.0]';   
 
 % R_c2b = eye(3);
-path = "/Users/jin/Q_Mac/data/person/2021-01-29T16-10-09";
+path = "/Users/jin/Q_Mac/data/2021-02-22T17-39-51";
 traj = importdata(path+"/ARposes.txt");
 ptCloud2 = pointCloud([0,0,0],'Color',[0,0,0]);
 intrinsics = importdata(path+"/Frames.txt");
@@ -163,7 +163,7 @@ all_pc = pcmerge(traj_pc,ptCloud2Aligned,0.01);
 figure, pcshow(all_pc)
 
 
-gt2 = importdata('/Users/jin/ss_wroma_2020-10-20-21-48-47_tum.tum');
+gt2 = importdata('/Users/jin/Q_Mac/data/iPhone12_2_22_2021/data7long/ARposes.txt');
 traj_xyz = (R_c2b*(gt2(:,2:4)'))';
 traj_color = zeros(length(traj_xyz),3);
 traj_color(:,2) = 255;
