@@ -1,15 +1,68 @@
+clc
+cursor_info.Position(1)
+
+clear
+close all
+
+format long g
+
 % ddd1=importdata("/Users/jin/Downloads/ipad/02_08/ARposes.txt");
-ddd1=importdata("/Users/jin/Q_Mac/data/2021-01-26T21-40-04/ARposes_arkit.txt");
+ddd1=importdata("/Volumes/BlackSSD/NewIROSiPhonedata/Paired/2021-04-19T18-05-23"+"/ARposes_arkit.txt");
+
+
+figure,
+subplot(3,1,1)
+plot(ddd1(:,1),ddd1(:,2),'g'),grid minor
+
+
+subplot(3,1,2)
+plot(ddd1(:,1),ddd1(:,3),'g'),grid minor
+% 
+
+subplot(3,1,3)
+plot(ddd1(:,1),ddd1(:,4),'g'),grid minor
+%%
+
+
+idx = 1742;
+% ddd1=importdata("/Users/jin/Q_Mac/localdata/ip12_150m/results/vins_result_loop.csv");idx = 123;
+% ddd1=importdata("/Users/jin/Q_Mac/localdata/ip12_150m/results/vins_result_no_loop.csv");idx = 286;
+% ddd1=importdata("/Users/jin/Q_Mac/localdata/ip12_150m/results/rgbd_vio.csv");idx = 264;
+% ddd1=importdata("/Users/jin/Q_Mac/localdata/ip12_150m/results/rgbd_vio_intrinsic.csv");idx = 287;
+% ddd1=importdata("/Users/jin/Q_Mac/localdata/ip12_150m/results/rgbd_vio4.csv");idx = 287;
+%
+% ddd1 = ddd1(9009:15828,:);
+ddd1(:,1) = ddd1(:,1) - ddd1(1,1);
+% [val,idx] = min(ddd1(1:40*30,3));
+
+figure,plot3(ddd1(:,2),-ddd1(:,3),ddd1(:,4),'b.','LineWidth',1),axis equal,grid minor
+hold on, plot3(ddd1(end,2),-ddd1(end,3),ddd1(end,4),'r*','LineWidth',4)
+hold on, plot3(ddd1(idx,2),-ddd1(idx,3),ddd1(idx,4),'g*','LineWidth',4)
+
+norm( [ddd1(idx,2),ddd1(idx,3),ddd1(idx,4)] - [ddd1(end,2),ddd1(end,3),ddd1(end,4)] )
+
+%%
+hold on 
+
+ddd1=importdata("/Users/jin/Q_Mac/localdata/2021-03-19T13-46-39/vinsmono/vins_result_loop.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceNearLong_est.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceFarshort_est.csv");
 % ddd1=importdata("/Volumes/BlackSSD/ss2/comp/div/faceFarLong_est.csv");
-%%
+%
 % ddd1 = ddd1(9009:15828,:);
 ddd1(:,1) = ddd1(:,1) - ddd1(1,1);
-figure,plot3(ddd1(:,2),ddd1(:,3),ddd1(:,4),'b','LineWidth',2),axis equal,grid minor
+[val,idx] = min(ddd1(1:30*30,3));
+idx = 100;
+plot3(ddd1(:,2),-ddd1(:,3),ddd1(:,4),'g.','LineWidth',1),axis equal,grid minor
+hold on, plot3(ddd1(end,2),-ddd1(end,3),ddd1(end,4),'r*','LineWidth',4)
+hold on, plot3(ddd1(idx,2),-ddd1(idx,3),ddd1(idx,4),'g*','LineWidth',4)
+
+norm( [ddd1(idx,2),ddd1(idx,3),ddd1(idx,4)] - [ddd1(end,2),ddd1(end,3),ddd1(end,4)] )
+grid minor
 %%
 ddd1 = gt;
-figure,patch(ddd1(:,2),ddd1(:,3),ddd1(:,4),ddd1(:,1),'edgecolor','flat','facecolor','none','LineWidth',3)
+%%
+figure,patch(ddd1(:,2),-ddd1(:,3),ddd1(:,4),ddd1(:,1),'edgecolor','flat','facecolor','none','LineWidth',3)
 grid minor
 view(3);colorbar
 axis equal

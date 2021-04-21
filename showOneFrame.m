@@ -2,7 +2,7 @@
 % close all
 % clear
 % path = "/Volumes/Extreme_LQ/testTraj_ipad_rgbdi/std_vs_mean/linear45/";
-path = "/Volumes/BlackSSD/iPhoneLidarCheck/texture/";
+path = "/Volumes/BlackSSD/drone_04_2021/dvio/2021-04-06T15-15-49/";
 video = VideoReader(path+"Frames.m4v");
 intrinsics = importdata(path+"Frames.txt");
 
@@ -19,13 +19,13 @@ M_depth  = reshape(M_depth,[256,192,totalImage]);
 %%
 close all
 % figure('units','normalized','outerposition',[0 0.4 .7 1]); 
-frameNum = 400;
+frameNum = 4040;
 % frameNum = 2520;
 % frameNum = 780;
 % frameNum = 1370;
 frame = read(video,frameNum);
 imwrite(frame,path+num2str(frameNum)+"colorFrame.png")
-%%
+%
 % frame = imread("/Users/jin/Downloads/Image 2-24-21 at 1.55 PM.jpg");
 frame = imresize(frame,[192,256]);
 % frame = uint8(255*ones(192,256,3)) - frame;
@@ -73,8 +73,8 @@ xyzPoints = xyzPoints(Z(:)~=0,:);
 imcolor3col1 = imcolor3col1(Z(:)~=0,:);
 ptCloud = pointCloud(xyzPoints, 'Color', imcolor3col1);
 % subplot(4,3,4:12),
-%%
-figiure,pcshow(ptCloud)
+%
+figure,pcshow(ptCloud)
 % set(gcf,'color','w');
 % set(gca,'color','w');
 % grid off

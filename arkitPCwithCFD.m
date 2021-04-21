@@ -2,7 +2,7 @@ clear
 close all
 clc
 s=1000;
-load('/Users/jin/Q_Mac/data/iphone_ego_summary/MeanE.mat');
+% load('/Users/jin/Q_Mac/data/iphone_ego_summary/MeanE.mat');
 R_c2b = [    1     0     0
      0     -1     0
      0     0    -1];
@@ -10,7 +10,7 @@ R_c2b = [    1     0     0
 t_c2b = [-0.00, -0.00, 0.0]';   
 
 % R_c2b = eye(3);
-path = "/Users/jin/Q_Mac/data/iPhone12_2_22_2021/data7long";
+path = "/Volumes/BlackSSD/drone_04_2021/drone_4_15/4/2021-04-15T18-23-03_top";
 video = VideoReader(path+"/Frames.m4v");
 
 traj = importdata(path+"/ARposes.txt");
@@ -39,8 +39,9 @@ ptCloud2 = pointCloud([0,0,0],'Color',[0,0,0]);
 
 T1(1:3,1:3) = quat2rotm(traj(1,5:8));
 T1(1:3,4) =(traj(1,2:4))';
-for frameNum = 1:50:totalImage
-    frameNum
+totalImage = 1700;
+for frameNum = 1:20:totalImage
+    frameNum/totalImage*100
     imdepthcfd = M_cfd(:,:,frameNum);
     imdepthcfd = double(imdepthcfd);
     imdepthcfd = imrotate( imdepthcfd , -90 );
@@ -61,26 +62,49 @@ for frameNum = 1:50:totalImage
     imdepth = imrotate( imdepth , -90 );
     imdepth = fliplr(imdepth); 
     
-    [~,threshold] = edge(imdepth,'sobel');
-    fudgeFactor = 0.5;
-    BWs = edge(imdepth,'sobel',threshold * fudgeFactor);
-
-    se = offsetstrel('ball',4,4);
-
-    dilatedI = imdilate(255*uint8(BWs),se);
-    imdepth(dilatedI(:,:)~=0)=0;
+%     [~,threshold] = edge(imdepth,'sobel');
+%     fudgeFactor = 0.5;
+%     BWs = edge(imdepth,'sobel',threshold * fudgeFactor);
+% 
+%     se = offsetstrel('ball',4,4);
+% 
+%     dilatedI = imdilate(255*uint8(BWs),se);
+%     imdepth(dilatedI(:,:)~=0)=0;
 %     imdepth = double(imdepth);
 %     imdepth = imresize(imdepth,[1440,1920]);
 
     Z = zeros(192,256);
+%     
+%     [~,threshold] = edge(imdepth,'sobel');
+%     fudgeFactor = 0.5;
+%     BWs = edge(imdepth,'sobel',threshold * fudgeFactor);
+% 
+%     se = offsetstrel('ball',2,2);
+%     dilatedI = imdilate(255*uint8(BWs),se);
+%     imdepth_temp = imdepth;
+%     for i =3:190
+%         for j = 3:253
+%             if (dilatedI(i,j) == 255)
+%                 surround = imdepth_temp(i-1:i+1,j-1:j+1);
+%                 surroundN = reshape(surround,[9,1]);
+%                 imdepth(i,j) = min(surroundN);
+% 
+%             end
+%         end
+%     end
+%     
     step = 1;
     Z(1:step:192,1:step:256) = imdepth(1:step:192,1:step:256);
+    
+    
+
+    
 %     Z = Z/1000;
     Z(Z(:,:)>4)=0;
-    Z(Z(:,:)<0.25)=0;
-    Z(imdepthcfd(:,:)<1.5)=0;
+%     Z(Z(:,:)<0.25)=0;
+%     Z(imdepthcfd(:,:)<0.5)=0;
     
-    Z = interp1(meanE(:,1),meanE(:,2),Z(:,:));
+%     Z = interp1(meanE(:,1),meanE(:,2),Z(:,:));
     
     [h,w] = size(imdepth);
     u=repmat(1:w,[h,1]);
@@ -117,32 +141,33 @@ for frameNum = 1:50:totalImage
     xyzPoints1_2c = (R_c2b*(RR*(R_c2b'*xyzPoints'-t_c2b)+tt)+t_c2b)';
 %     xyzPoints1_2c = xyzPoints;
     ptCloud1_2c = pointCloud(xyzPoints1_2c, 'Color', imcolor3col1); 
-    ptCloud1_2c = pcdenoise(ptCloud1_2c,'NumNeighbors',4,'Threshold',.5);
+%     ptCloud1_2c = pcdenoise(ptCloud1_2c,'NumNeighbors',4,'Threshold',.1);
 
-    ptCloud2 = pcmerge(ptCloud2,ptCloud1_2c,0.001);
+    ptCloud2 = pcmerge(ptCloud2,ptCloud1_2c,0.01);
 end
 
-figure,
-pcshow(ptCloud2)
+% figure,
+% pcshow(ptCloud2)
 pcwrite(ptCloud2,path+"/pc.ply")
-
 %%
-accumTform = rigid3d(T2(1:3,1:3)',[0,0,0]);
-ptCloud2Aligned = pctransform(ptCloud2, accumTform);
-% figure, pcshow(ptCloud2Aligned)
-
+% figure, pcshow(ptCloud2),
+% hold on,
 traj_xyz = (R_c2b*(traj(:,2:4)'))';
+% pt1 = plot3(traj_xyz(:,1),traj_xyz(:,2),traj_xyz(:,3),'r.','LineWidth',1);
+% set(gcf,'color','w');
+% set(gca,'color','w');
+% axis off
+% grid off
+
+% [val,idx] = min(traj_xyz(1:30*30,1));
+
+% pt2 = plot3(traj_xyz(idx,1),traj_xyz(idx,2),traj_xyz(idx,3),'g*','LineWidth',4);
+% pt3 = plot3(traj_xyz(end,1),traj_xyz(end,2),traj_xyz(end,3),'b*','LineWidth',4);
+
+%
 traj_color = zeros(length(traj_xyz),3);
 traj_color(:,1) = 255;
 traj_pc = pointCloud(traj_xyz, 'Color', traj_color);
-all_pc = pcmerge(traj_pc,ptCloud2Aligned,0.01);
-figure, pcshow(all_pc)
-
-%%
-gt2 = importdata('/Users/jin/Q_Mac/data/iPhone12_2_22_2021/data7long/ARposes.txt');
-traj_xyz = (R_c2b*(gt2(:,2:4)'))';
-traj_color = zeros(length(traj_xyz),3);
-traj_color(:,2) = 255;
-traj_pc = pointCloud(traj_xyz, 'Color', traj_color);
-all_pc_2 = pcmerge(all_pc,traj_pc,0.01);
-figure, pcshow(all_pc_2)
+% all_pc = pcmerge(traj_pc,ptCloud2,0.001);
+% figure, pcshow(all_pc)
+pcwrite(traj_pc,path+"/traj.ply")
