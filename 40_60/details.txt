@@ -1,0 +1,20 @@
+estimate @10.5Hz groundtruth @120Hz
+
+    	Mean       		std
+x		4.0022 cm		1.1213
+y 		2.1610 cm   	1.8546
+z		5.9256 cm   	1.3398
+Vx		0.6163 cm/s  	0.4819
+Vy 		1.1342 cm/s  	0.8812
+Vz		1.2487 cm/s  	0.9226
+
+
+    	Mean       		 std
+roll 	0.8376 degree    0.5114
+pitch 	0.6688 degree    0.6964
+yaw 	2.4016 degree    0.6069
+Wroll 	0.7277 degree/s  0.6013
+Wpitch 	0.8090 degree/s  0.7928
+Wyaw 	0.5278 degree/s  0.4720
+
+
